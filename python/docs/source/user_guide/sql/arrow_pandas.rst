@@ -93,8 +93,52 @@ specify the type hints of ``pandas.Series`` and ``pandas.DataFrame`` as below:
     :lines: 56-80
     :dedent: 4
 
-In the following sections, it describes the combinations of the supported type hints. For simplicity,
-``pandas.DataFrame`` variant is omitted.
+Using Arrow with Pandas
+~~~~~~~~~~~~~~~~
+
+.. currentmodule:: pyarrow
+
+Spark SQL can read and write Arrow DataFrames, which can provide significant performance
+improvements over traditional Parquet files.
+
+Here is an example of how to use the to_arrow() and from_arrow() methods to read and write data
+from a Parquet file:
+
+.. code-block:: python
+
+    import pyarrow as pa
+    import pandas as pd
+
+    # Create a Pandas DataFrame
+    df = pd.DataFrame({
+        "name": ["Alice", "Bob", "Carol"],
+        "age": [20, 30, 40],
+        "gender": ["Male", "Female", "Female"]
+    })
+
+    # Convert the DataFrame to an Arrow table
+    table = pa.to_arrow(df)
+
+    # Write the Arrow table to a Parquet file
+    pa.write_table(table, "data.parquet")
+
+    # Read the Parquet file back into a DataFrame
+    df2 = pa.read_table("data.parquet")
+
+    # Print the DataFrame
+    print(df2)
+
+    # Read the Parquet file back into a DataFrame using the from_arrow() method
+    df3 = pa.from_arrow(table)
+
+    # Print the DataFrame
+    print(df3)
+
+This code will first create a Pandas DataFrame. Then, it will convert the DataFrame to an 
+Arrow table using the to_arrow() method. The Arrow table will then be written to a Parquet 
+file using the write_table() method. The Parquet file can then be read back into a DataFrame 
+using the read_table() method. The from_arrow() method can also be used to read the Parquet 
+file back into a DataFrame.
 
 Series to Series
 ~~~~~~~~~~~~~~~~
